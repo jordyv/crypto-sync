@@ -22,3 +22,8 @@ Usage: crypto-sync [<flags>] <coin code> <coin code>
 # Run every 5 minutes and output to syslog
 ./crypto-sync -time 5m lsk btk | logger -t crypto-sync &
 ```
+
+## Development ##
+
+- Install dependencies with [dep](https://golang.github.io/dep/): `dep ensure`
+- Build binary for your system: `make`
