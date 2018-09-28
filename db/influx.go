@@ -2,17 +2,18 @@ package db
 
 import (
 	"crypto-sync/litebit-api"
+	"fmt"
 	"github.com/influxdata/influxdb/client/v2"
 	"strconv"
 	"time"
 )
 
-func WriteToInfluxDB(apiResponse litebit_api.LitebitApiResult) (map[string]interface{}, error) {
+func WriteToInfluxDB(apiResponse litebit_api.LitebitApiResult, databaseHost string, databasePort int) (map[string]interface{}, error) {
 	buyRate, _ := strconv.ParseFloat(apiResponse.Result.Buy, 32)
 	sellRate, _ := strconv.ParseFloat(apiResponse.Result.Sell, 32)
 
 	connection, connectionErr := client.NewHTTPClient(client.HTTPConfig{
-		Addr: "http://localhost:8086",
+		Addr: fmt.Sprintf("http://%s:%d", databaseHost, databasePort),
 	})
 	if connectionErr != nil {
 		return nil, connectionErr
@@ -32,7 +33,10 @@ func WriteToInfluxDB(apiResponse litebit_api.LitebitApiResult) (map[string]inter
 		return nil, connectionErr
 	}
 	bp.AddPoint(pt)
-	connection.Write(bp)
+	writeErr := connection.Write(bp)
+	if writeErr != nil {
+		return nil, writeErr
+	}
 
 	return fields, nil
 }
