@@ -2,7 +2,7 @@
 
 ## Usage ##
 
-```bash
+```
 Usage: crypto-sync [<flags>] <coin code> <coin code>
   -host string
         Host for InfluxDB (default "localhost")
@@ -12,12 +12,13 @@ Usage: crypto-sync [<flags>] <coin code> <coin code>
         Time between syncs, eg 10s or 5m (default 10s)
 ```
 
-```bash
+```
 ./crypto-sync -time 5m lsk btk
 ```
 
 ## Run as background process ##
-```bash
+
+```
 # Run every 5 minutes and output to syslog
 ./crypto-sync -time 5m lsk btk | logger -t crypto-sync &
 ```
